@@ -39,7 +39,7 @@ export default function Newsletter() {
             </button>
           </form>
         </div>
-        <div className="lg:mr-[100px]">
+        <div className="lg:mr-[50px]">
           <Image
             src="/assets/homepage/leaf.png"
             alt="Leaf decoration"

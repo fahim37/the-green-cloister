@@ -1,10 +1,26 @@
+"use client";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
 import StatsBar from "./stats-bar";
 import Link from "next/link";
+import { useState } from "react";
+import { useAnimation, motion } from "framer-motion";
 
 export default function Hero() {
+  const controls = useAnimation();
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleHoverStart = () => {
+    setIsHovered(true);
+    controls.start({ x: 5 });
+  };
+
+  const handleHoverEnd = () => {
+    setIsHovered(false);
+    controls.start({ x: 0 });
+  };
+
   return (
     <div className="relative h-[900px] w-full mt-[-64px]">
       {/* Background Image */}
@@ -45,9 +61,19 @@ export default function Hero() {
             </div>
             <div className="py-3">
               <Link href={"article/123"}>
-                <Button className="bg-primary text-textPrimary hover:bg-primary/90 text-lg px-6 py-6 h-[52px] w-[230px] rounded-[12px]">
-                  Read Latest Article
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                <Button
+                  className="bg-primary text-textPrimary hover:bg-primary/90 text-lg px-6 py-6 h-[52px] w-[230px] rounded-[12px] relative overflow-hidden"
+                  onMouseEnter={handleHoverStart}
+                  onMouseLeave={handleHoverEnd}
+                >
+                  <span>Read Latest Article</span>
+                  <motion.div
+                    className="inline-block ml-2"
+                    animate={controls}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    <ArrowRight className="h-5 w-5" />
+                  </motion.div>
                 </Button>
               </Link>
             </div>
