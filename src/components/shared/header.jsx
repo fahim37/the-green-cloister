@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Flame, Menu, Search, X, ChevronDown } from "lucide-react";
+import { Menu, Search, X, ChevronDown } from "lucide-react";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "../ui/sheet";
 import {
@@ -13,6 +13,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "../ui/navigation-menu";
+import { usePathname } from "next/navigation";
 
 const categories = [
   { title: "Short Read", href: "/category/short-read" },
@@ -27,6 +28,7 @@ export function Header() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isTop, setIsTop] = useState(true);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,6 +47,14 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
+
+  const getLinkStyle = (path) => {
+    const baseStyle = isTop
+      ? "text-white hover:bg-white/10"
+      : "text-black hover:bg-gray-100";
+    const activeStyle = "text-primary";
+    return pathname === path ? `${baseStyle} ${activeStyle}` : baseStyle;
+  };
 
   return (
     <motion.header
@@ -71,11 +81,7 @@ export function Header() {
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger
-                  className={`${
-                    isTop
-                      ? "text-white hover:bg-white/10 bg-transparent"
-                      : "text-black "
-                  } `}
+                  className={`${getLinkStyle("/category")}`}
                 >
                   By Category
                 </NavigationMenuTrigger>
@@ -85,7 +91,9 @@ export function Header() {
                       <li key={category.href}>
                         <Link
                           href={category.href}
-                          className="block select-none rounded-md p-3 text-sm text-white no-underline outline-none transition-colors hover:bg-white/10"
+                          className={`block select-none rounded-md p-3 text-sm no-underline outline-none transition-colors ${getLinkStyle(
+                            category.href
+                          )}`}
                         >
                           {category.title}
                         </Link>
@@ -96,22 +104,10 @@ export function Header() {
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-          <Button
-            variant="ghost"
-            className={`${
-              isTop ? "text-white hover:bg-white/10" : "text-black "
-            }`}
-            asChild
-          >
+          <Button variant="ghost" className={getLinkStyle("/about")} asChild>
             <Link href="/about">About Us</Link>
           </Button>
-          <Button
-            variant="ghost"
-            className={`${
-              isTop ? "text-white hover:bg-white/10" : "text-black "
-            }`}
-            asChild
-          >
+          <Button variant="ghost" className={getLinkStyle("/contact")} asChild>
             <Link href="/contact">Contact Us</Link>
           </Button>
         </nav>
@@ -122,7 +118,9 @@ export function Header() {
             variant="ghost"
             size="icon"
             className={`${
-              isTop ? "text-white hover:bg-white/10" : "text-black "
+              isTop
+                ? "text-white hover:bg-white/10"
+                : "text-black hover:bg-gray-100"
             }`}
           >
             <Search className="h-5 w-5" />
@@ -135,15 +133,19 @@ export function Header() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-black hover:bg-gray-100 md:hidden"
+                className={`${
+                  isTop
+                    ? "text-white hover:bg-white/10"
+                    : "text-black hover:bg-gray-100"
+                } md:hidden`}
               >
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent
-              side="top"
-              className="h-screen w-full border-none bg-[#0D1222]"
+              side="right"
+              className="w-[300px] sm:w-[400px] border-none bg-[#0D1222]"
             >
               <SheetHeader>
                 <div className="flex justify-end">
@@ -157,7 +159,7 @@ export function Header() {
                   </SheetTrigger>
                 </div>
               </SheetHeader>
-              <nav className="mt-8 flex flex-col space-y-4 px-4">
+              <nav className="mt-8 flex flex-col space-y-4">
                 {/* Mobile Category Dropdown */}
                 <button
                   className="flex items-center justify-between w-full text-lg text-white"
@@ -176,7 +178,9 @@ export function Header() {
                       <Link
                         key={category.href}
                         href={category.href}
-                        className="block text-sm text-white/90 hover:text-white"
+                        className={`block text-sm ${getLinkStyle(
+                          category.href
+                        )}`}
                       >
                         {category.title}
                       </Link>
@@ -186,13 +190,13 @@ export function Header() {
 
                 <Link
                   href="/about"
-                  className="text-lg text-white hover:text-white/90"
+                  className={`text-lg ${getLinkStyle("/about")}`}
                 >
                   About Us
                 </Link>
                 <Link
                   href="/contact"
-                  className="text-lg text-white hover:text-white/90"
+                  className={`text-lg ${getLinkStyle("/contact")}`}
                 >
                   Contact Us
                 </Link>
