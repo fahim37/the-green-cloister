@@ -93,7 +93,7 @@ export default function PopularCarousel() {
                         alt={article.title}
                         width={370}
                         height={330}
-                        className="object-cover w-[370px] h-[340px]"
+                        className="object-cover w-full h-full"
                       />
                     </div>
                   </Link>

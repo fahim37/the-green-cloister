@@ -62,10 +62,10 @@ export default function ArchiveArticles() {
     <div className="container px-4 py-12">
       <div className="flex justify-between items-center">
         <div />
-        <div className=" md:mr-[-100]">
+        <div className="translate-x-[55px]">
           <HomePageHeading text={"Archives"} />
         </div>
-        <Link href="/all" className="mb-10 ">
+        <Link href="/all" className="mb-7 md:mb-10 ">
           <Button
             variant="custom"
             className=" text-primary underline hover:text-primary/80 text-[16px]"
