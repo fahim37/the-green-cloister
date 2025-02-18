@@ -25,7 +25,7 @@ export default function ArticlePost() {
   };
   return (
     <article className="min-h-screen  text-textPrimary">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-8">
         {/* Header Meta */}
         <div className="space-y-4 mb-6">
           <div className="flex flex-wrap items-center gap-2 text-sm text-gray-400">
