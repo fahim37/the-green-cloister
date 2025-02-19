@@ -12,13 +12,13 @@ export default function Newsletter() {
   };
 
   return (
-    <div className=" bg-[#32373B] mb-[40px] lg:my-[80px]">
+    <div className=" bg-[#E6FFDD] mb-[40px] lg:my-[80px]">
       <div className="container flex justify-between items-start py-10">
         <div className="max-w-3xl">
-          <h2 className="text-white text-2xl font-medium mb-2">
+          <h2 className="text-textPrimary text-2xl font-medium mb-2">
             Subscribe to our Newsletter
           </h2>
-          <p className="text-gray-400 mb-6">
+          <p className="text-textPrimary mb-6">
             Lorem ipsum dolor sit amet consectetur. A nulla morbi suspendisse ut
             sed commodo senectus tortor. Diam eu et at neque.
           </p>

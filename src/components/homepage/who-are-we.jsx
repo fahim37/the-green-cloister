@@ -10,7 +10,7 @@ export default function WhoAreWe() {
         </h1>
         <div className="grid md:grid-cols-[1fr,auto] gap-10 lg:gap-8 items-start">
           <div className="space-y-6 lg:w-[450px] text-[16px]">
-            <p className="text-white/90 leading-relaxed">
+            <p className="text-textPrimary leading-relaxed">
               Welcome to [College Name]&apos;s Student-Run Environmental
               Publication, a platform created and managed by students passionate
               about protecting our planet. Our mission is to raise awareness,
@@ -18,7 +18,7 @@ export default function WhoAreWe() {
               sustainable future.
             </p>
 
-            <p className="text-white/90 leading-relaxed">
+            <p className="text-textPrimary leading-relaxed">
               As an entirely student-driven publication, we provide a space for
               students to explore environmental issues, share innovative
               solutions, and highlight the work of individuals and organizations
@@ -28,14 +28,14 @@ export default function WhoAreWe() {
               environmental advocates.
             </p>
 
-            <p className="text-white/90 leading-relaxed">
+            <p className="text-textPrimary leading-relaxed">
               Whether it&apos;s covering the latest in climate science,
               sustainability initiatives, or offering tips for living more
               eco-friendly, our goal is to educate, inspire, and motivate our
               readers to take practical steps in preserving the world around us.
             </p>
 
-            <p className="text-white/90 leading-relaxed">
+            <p className="text-textPrimary leading-relaxed">
               We are committed to providing diverse perspectives on
               environmental challenges and solutions, and we encourage
               submissions from all members of the college community.
