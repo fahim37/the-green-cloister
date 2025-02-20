@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import { InteractiveHoverButton } from "../magicui/interactive-hover-button";
 
 const ArticleGrid = ({ articles }) => {
   return (
@@ -49,9 +50,10 @@ const ArticleGrid = ({ articles }) => {
             </p>
             <div className="mt-3">
               <Link href={`/article/${article.slug}`}>
-                <Button variant="outline" className="text-[16px]">
-                  Read More
-                </Button>
+                {/* <Button variant="outline" className="text-[16px]">
+                  
+                </Button> */}
+                <InteractiveHoverButton>Read More</InteractiveHoverButton>
               </Link>
             </div>
           </div>
