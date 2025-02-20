@@ -65,7 +65,7 @@ export default function PopularCarousel() {
       <div>
         <div className="flex items-center justify-center gap-2 mb-10">
           <div className="w-2 h-8 bg-primary"></div>
-          <h2 className="text-white text-[36px] font-semibold">
+          <h2 className="text-textPrimary text-[24px] md:text-[36px] font-semibold">
             POPULAR THIS WEEK
           </h2>
         </div>
@@ -87,7 +87,7 @@ export default function PopularCarousel() {
 "
                 >
                   <Link href={"/article/123"}>
-                    <div className="border border-primary">
+                    <div className="border-2 border-primary">
                       <Image
                         src={"/assets/homepage/carousel.jpg"}
                         alt={article.title}
@@ -102,7 +102,7 @@ export default function PopularCarousel() {
                     {/* <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" /> */}
                     <div className="">
                       <Link href={"/article/123"}>
-                        <h3 className="text-textPrimary hover:text-primary font-semibold mb-2 text-[24px] pt-4">
+                        <h3 className="text-textPrimary hover:text-primary font-semibold mb-2 text-[18px] lg:text-[24px] pt-4">
                           {article.title}
                         </h3>
                       </Link>

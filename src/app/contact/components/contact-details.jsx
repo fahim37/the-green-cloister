@@ -6,7 +6,7 @@ const ContactDetails = () => {
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <div className="w-2 h-8 bg-primary" />
-          <h1 className="text-3xl font-bold text-white">Contact Us</h1>
+          <h1 className="text-3xl font-bold text-textPrimary">Contact Us</h1>
         </div>
         <p className="text-zinc-400">
           Don&apos;t hesitate to send a message using this form if you have any

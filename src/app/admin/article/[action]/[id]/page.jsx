@@ -1,5 +1,3 @@
-import { notFound } from "next/navigation";
-
 import ArticleForm from "@/components/article/article-form";
 import AdminLayout from "@/app/admin/admin-layout";
 

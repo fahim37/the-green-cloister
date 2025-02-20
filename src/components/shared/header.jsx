@@ -61,7 +61,7 @@ export function Header() {
       initial={{ y: 0 }}
       animate={{ y: visible ? 0 : -100 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className={`fixed top-0 z-50 w-full transition-all ${
+      className={`fixed top-0 z-50 w-full transition-all backdrop-blur-md ${
         isTop ? "bg-transparent" : "bg-white shadow-md"
       }`}
     >
@@ -86,7 +86,7 @@ export function Header() {
                   By Category
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[200px] gap-1 bg-primary p-4">
+                  <ul className="grid w-[200px] gap-1 bg-primary text-textPrimary p-4">
                     {categories.map((category) => (
                       <li key={category.href}>
                         <Link

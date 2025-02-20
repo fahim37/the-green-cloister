@@ -12,7 +12,7 @@ const ArticleGrid = ({ articles }) => {
           className="relative flex h-[670px] w-full flex-col"
         >
           <Link href={`/article/${article.slug}`} className="block">
-            <div className="relative h-[450px] rounded-lg overflow-hidden border border-primary">
+            <div className="relative h-[450px] rounded-lg overflow-hidden border-2 border-primary">
               {article.category && (
                 <Badge
                   variant="secondary"
@@ -37,15 +37,8 @@ const ArticleGrid = ({ articles }) => {
               className="group relative block w-fit"
             >
               <h2
-                className="mb-3 text-[24px] font-medium leading-tight text-textPrimary hover:text-primary relative
-                 transition-all duration-300 ease-[cubic-bezier(0.785,0.135,0.15,0.86)] group-hover:bg-[length:100%_1px]"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(to right, currentColor 0%, currentColor 100%)",
-                  backgroundSize: "0% 1px", // Start with no underline
-                  backgroundPosition: "0 95%", // Position it close to the text
-                  backgroundRepeat: "no-repeat",
-                }}
+                className="mb-3 text-[18px] lg:text-[24px] font-semibold leading-tight text-textPrimary hover:text-primary relative
+                 transition-all duration-300 "
               >
                 {article.title}
               </h2>
@@ -54,7 +47,7 @@ const ArticleGrid = ({ articles }) => {
             <p className="line-clamp-3 text-sm leading-snug text-textPrimary">
               {article.excerpt}
             </p>
-            <div className="mt-auto pt-2">
+            <div className="mt-3">
               <Link href={`/article/${article.slug}`}>
                 <Button variant="outline" className="text-[16px]">
                   Read More

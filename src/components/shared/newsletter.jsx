@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { Particles } from "../magicui/particles";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
@@ -12,10 +13,17 @@ export default function Newsletter() {
   };
 
   return (
-    <div className=" bg-[#E6FFDD] mb-[40px] lg:my-[80px]">
-      <div className="container flex justify-between items-start py-10">
-        <div className="max-w-3xl">
-          <h2 className="text-textPrimary text-2xl font-medium mb-2">
+    <div className=" bg-[#E6FFDD] lg:mt-[80px] relative">
+      <Particles
+        className="absolute inset-0 z-0"
+        quantity={150}
+        ease={180}
+        color={"#0f4d0f"}
+        refresh
+      />
+      <div className="container flex min-h-[350px] justify-between items-center py-10 ">
+        <div className="max-w-3xl z-50">
+          <h2 className="text-textPrimary text-2xl font-semibold mb-2">
             Subscribe to our Newsletter
           </h2>
           <p className="text-textPrimary mb-6">
@@ -39,7 +47,7 @@ export default function Newsletter() {
             </button>
           </form>
         </div>
-        <div className="lg:mr-[50px]">
+        <div className="lg:mr-[50px] z-50">
           <Image
             src="/assets/homepage/leaf.png"
             alt="Leaf decoration"

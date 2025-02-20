@@ -4,7 +4,7 @@ export default function WhoAreWe() {
   return (
     <section className=" container py-8 md:py-16">
       <div>
-        <h1 className="text-4xl font-light text-textPrimary flex items-center justify-center mb-[30px] lg:mb-[50px]">
+        <h1 className="text-[24px] lg:text-[34px] text-textPrimary flex items-center justify-center mb-[30px] lg:mb-[50px] font-semibold">
           <div className="h-8 w-2 bg-primary mr-2 "></div>
           Who are we?
         </h1>
@@ -42,7 +42,7 @@ export default function WhoAreWe() {
             </p>
           </div>
 
-          <div className="relative lg:translate-x-[-80px] mb-[160px] lg:mb-2">
+          <div className="relative md:translate-x-[-80px] mb-[160px] lg:mb-2">
             <div className="relative w-[260px] mx-auto ">
               <Image
                 src="/assets/homepage/whoarewe1.png"

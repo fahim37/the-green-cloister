@@ -2,14 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import {
-  BarChart3,
-  FileEdit,
-  FilePlus,
-  Folders,
-  LayoutDashboard,
-  Menu,
-} from "lucide-react";
+import { FilePlus, LayoutDashboard, Menu } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
