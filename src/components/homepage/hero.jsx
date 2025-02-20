@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useAnimation, motion } from "framer-motion";
 import StatsBar from "./stats-bar";
 import { MagicCard } from "../magicui/magic-card";
+import StaggeredText from "../animation/staggered-text";
 
 export default function Hero() {
   const controls = useAnimation();
@@ -35,19 +36,38 @@ export default function Hero() {
           max-w-[1050px] max-h-[440px] flex-col items-center"
             gradientColor="#00800066"
           >
-            <div className="bg-white h-full w-full scale-x-[99%] scale-y-[98%] py-6 px-3 lg:py-14 lg:px-14 rounded-lg translate-y-[-0.5px]">
+            <div className="bg-white h-full w-full scale-x-[99%] scale-y-[97.5%] py-6 px-3 lg:py-14 lg:px-14 rounded-lg translate-y-[-0.5px]">
               <div className="space-y-4 ">
-                <h2 className="text-[#96B28D] text-lg md:text-2xl font-normal">
-                  {"Eton College's student-run environmental publication"}
-                </h2>
-                <h1 className="text-[30px] md:text-[45px] font-bold leading-tight">
-                  Stay Informed on the{" "}
-                  <span className="text-primary">Environment</span>
-                  <br />
-                  <span className="text-primary">from Solutions</span> to Urgent
-                  Challenges
-                </h1>
-                <blockquote className="text-[15px] md:text-[20px] mt-6 italic text-gray-600 max-w-[600px]">
+                <div className="flex gap-3">
+                  <StaggeredText
+                    text="The"
+                    delay={0}
+                    className={
+                      "text-primary text-[35px] lg:text-[55px] font-semibold"
+                    }
+                  />
+                  <StaggeredText
+                    text="Green"
+                    delay={0.4}
+                    className={
+                      "text-primary text-[35px] lg:text-[55px] font-semibold"
+                    }
+                  />
+                  <StaggeredText
+                    text="Cloister"
+                    delay={0.8}
+                    className={
+                      "text-primary text-[35px] lg:text-[55px] font-semibold"
+                    }
+                  />
+                </div>
+                <StaggeredText
+                  text="Eton College's student-run environmental publication"
+                  delay={1}
+                  className={"text-[#8db87f] text-md md:text-2xl font-normal"}
+                  asWords={"true"}
+                />
+                <blockquote className="text-[15px] md:text-[20px] mt-6 italic text-gray-600 max-w-[800px]">
                   {
                     '"I\'m sure things are going to get worse before they get better.\nBut I believe they can get better."'
                   }

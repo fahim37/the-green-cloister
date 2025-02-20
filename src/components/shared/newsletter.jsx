@@ -18,7 +18,7 @@ export default function Newsletter() {
         className="absolute inset-0 z-0"
         quantity={150}
         ease={180}
-        color={"#0f4d0f"}
+        color={"#3e9c3e"}
         refresh
       />
       <div className="container flex min-h-[350px] justify-between items-center py-10 ">
