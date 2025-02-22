@@ -1,5 +1,5 @@
 import ArticleForm from "@/components/article/article-form";
-import AdminLayout from "@/app/admin/admin-layout";
+import AdminLayout from "@/app/manage/admin-layout";
 
 const blog = {
   title: "The Green Cloister: A Sanctuary of Nature and Architecture",

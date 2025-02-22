@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import FadeB from "../animation/fadeB";
 
 const articles = [
   {
@@ -69,52 +70,54 @@ export default function PopularCarousel() {
             POPULAR THIS WEEK
           </h2>
         </div>
-
-        <Carousel
-          setApi={setApi}
-          className="w-full"
-          opts={{
-            align: "start",
-            loop: true,
-            // slidesToScroll: 3,
-          }}
-        >
-          <CarouselContent>
-            {articles.map((article, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                <Card
-                  className="overflow-hidden border-0 rounded-lg bg-transparent select-none
+        <FadeB>
+          <Carousel
+            setApi={setApi}
+            className="w-full"
+            opts={{
+              align: "start",
+              loop: true,
+              // slidesToScroll: 3,
+            }}
+          >
+            <CarouselContent>
+              {articles.map((article, index) => (
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                  <Card
+                    className="overflow-hidden border-none rounded-lg bg-transparent select-none
 "
-                >
-                  <Link href={"/article/123"}>
-                    <div className="border-2 border-primary">
-                      <Image
-                        src={"/assets/homepage/carousel.jpg"}
-                        alt={article.title}
-                        width={370}
-                        height={330}
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-                  </Link>
+                  >
+                    <Link href={"/article/123"}>
+                      <div className="border-2 border-primary">
+                        <Image
+                          src={"/assets/homepage/carousel.jpg"}
+                          alt={article.title}
+                          width={370}
+                          height={330}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+                    </Link>
 
-                  <div className="bg-transparent">
-                    {/* <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" /> */}
-                    <div className="">
-                      <Link href={"/article/123"}>
-                        <h3 className="text-textPrimary hover:text-primary font-semibold mb-2 text-[18px] lg:text-[24px] pt-4">
-                          {article.title}
-                        </h3>
-                      </Link>
-                      <p className="text-textPrimary text-sm">{article.date}</p>
+                    <div className="bg-transparent">
+                      {/* <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" /> */}
+                      <div className="">
+                        <Link href={"/article/123"}>
+                          <h3 className="text-textPrimary hover:text-primary font-semibold mb-2 text-[18px] lg:text-[24px] pt-4">
+                            {article.title}
+                          </h3>
+                        </Link>
+                        <p className="text-textPrimary text-sm">
+                          {article.date}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </FadeB>
         <div className="flex justify-center gap-2 mt-4">
           {articles.map((_, index) => (
             <button

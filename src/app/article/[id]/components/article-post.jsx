@@ -37,7 +37,7 @@ export default function ArticlePost() {
               <CalendarIcon className="h-4 w-4" />
               {article.date}
             </span>
-            <Badge variant="secondary" className="ml-2">
+            <Badge variant="secondary" className="ml-2 bg-primary text-white">
               {article.category}
             </Badge>
           </div>

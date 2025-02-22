@@ -16,6 +16,8 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const navItems = [
   {
@@ -23,7 +25,7 @@ const navItems = [
     items: [
       {
         title: "Dashboard",
-        href: "/admin",
+        href: "/manage",
         icon: <LayoutDashboard className="w-4 h-4" />,
       },
     ],
@@ -33,12 +35,12 @@ const navItems = [
     items: [
       {
         title: "All Articles",
-        href: "/admin/article",
+        href: "/manage/article",
         icon: <FilePlus className="w-4 h-4" />,
       },
       {
         title: "Add Article",
-        href: "/admin/article/add",
+        href: "/manage/article/add",
         icon: <FilePlus className="w-4 h-4" />,
       },
     ],
@@ -47,14 +49,27 @@ const navItems = [
 
 export default function AdminLayout({ children }) {
   const [isOpen, setIsOpen] = React.useState(false);
+  const router = useRouter();
+
+  React.useEffect(() => {
+    document.documentElement.style.overflow = "hidden";
+  }, []);
+
+  const handleLogOut = () => {
+    // Remove the authToken cookie
+    Cookies.remove("authToken");
+
+    // Redirect to login page
+    router.push("/login");
+  };
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex max-h-screen bg-white">
       <aside className="hidden lg:flex w-64 flex-col border-r">
         <div className="p-6 border-b">
           <h2 className="text-lg font-semibold">Admin Panel</h2>
         </div>
-        <ScrollArea className="flex-1">
+        <div className="flex-1">
           <nav className="p-4 space-y-6">
             {navItems.map((section, i) => (
               <div key={i} className="space-y-2">
@@ -74,7 +89,7 @@ export default function AdminLayout({ children }) {
               </div>
             ))}
           </nav>
-        </ScrollArea>
+        </div>
       </aside>
 
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -133,7 +148,14 @@ export default function AdminLayout({ children }) {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button
+                  onClick={handleLogOut}
+                  className="bg-red-500 hover:bg-red-700 w-full"
+                >
+                  Logout
+                </Button>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>

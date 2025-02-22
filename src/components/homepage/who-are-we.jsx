@@ -1,4 +1,7 @@
+"use client";
 import Image from "next/image";
+import FadeL from "../animation/fadeL";
+import FadeR from "../animation/fadeR";
 
 export default function WhoAreWe() {
   return (
@@ -9,7 +12,7 @@ export default function WhoAreWe() {
           Who are we?
         </h1>
         <div className="grid md:grid-cols-[1fr,auto] gap-10 lg:gap-8 items-start">
-          <div className="space-y-6 lg:w-[450px] text-[16px]">
+          <FadeL className="space-y-6 lg:w-[450px] text-[16px]">
             <p className="text-textPrimary leading-relaxed">
               Welcome to [College Name]&apos;s Student-Run Environmental
               Publication, a platform created and managed by students passionate
@@ -40,9 +43,9 @@ export default function WhoAreWe() {
               environmental challenges and solutions, and we encourage
               submissions from all members of the college community.
             </p>
-          </div>
+          </FadeL>
 
-          <div className="relative md:translate-x-[-80px] mb-[160px] lg:mb-2">
+          <FadeR className="relative md:translate-x-[-80px] mb-[160px] lg:mb-2">
             <div className="relative w-[260px] mx-auto ">
               <Image
                 src="/assets/homepage/whoarewe1.png"
@@ -61,7 +64,7 @@ export default function WhoAreWe() {
                 />
               </div>
             </div>
-          </div>
+          </FadeR>
         </div>
       </div>
     </section>

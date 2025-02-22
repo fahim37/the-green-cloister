@@ -7,13 +7,13 @@ import Footer from "@/components/shared/footer";
 
 export default function LayoutWrapper({ children }) {
   const pathname = usePathname();
-  const isAdminRoute = pathname.startsWith("/admin");
+  const isHiddenRoute = pathname.startsWith("/manage") || pathname === "/login";
 
   return (
     <>
-      {!isAdminRoute && <Header />}
+      {!isHiddenRoute && <Header />}
       {children}
-      {!isAdminRoute && (
+      {!isHiddenRoute && (
         <>
           <Newsletter />
           <Footer />

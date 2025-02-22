@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarIcon, Loader2, Upload } from "lucide-react";
+import { CalendarIcon, Loader2, Upload, Plus, Trash2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -31,27 +31,50 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { z } from "zod";
+import axios from "axios";
+import Cookies from "js-cookie";
 
-const categories = [
-  { id: "1", name: "Technology" },
-  { id: "2", name: "Travel" },
-  { id: "3", name: "Food" },
-  { id: "4", name: "Lifestyle" },
-];
+// const categories = [
+//   { id: "1", name: "Technology" },
+//   { id: "2", name: "Travel" },
+//   { id: "3", name: "Food" },
+//   { id: "4", name: "Lifestyle" },
+// ];
 
 const blogFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Blog description is required"),
   category: z.string().min(1, "Category is required"),
   authorName: z.string().min(1, "Author name is required"),
-  referenceUrl: z.string().url().optional().or(z.literal("")),
+  referenceUrl: z.array(z.string().or(z.literal(""))),
   date: z.date(),
-  banner: z.string().min(1, "Blog banner is required"),
+  image: z.instanceof(File).or(z.string()).optional(),
 });
 
-export default function ArticleForm({ mode, initialData }) {
+export default function ArticleForm({ mode = "add", initialData }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [categories, setCategories] = React.useState([]);
+  const [isCategoriesLoading, setIsCategoriesLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/categories`
+        );
+        if (response.data.status) {
+          setCategories(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setIsCategoriesLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
@@ -60,30 +83,53 @@ export default function ArticleForm({ mode, initialData }) {
       description: "",
       category: "",
       authorName: "",
-      referenceUrl: "",
+      referenceUrl: [""],
       date: new Date(),
-      banner: "",
+      image: "",
     },
   });
-
-  // .toISOString().split("T")[0]
 
   async function onSubmit(data) {
     setIsLoading(true);
     try {
-      // Here you would typically make an API call to save/update the blog
-      const endpoint =
-        mode === "add" ? "/api/blogs" : `/api/blogs/${initialData?.id}`;
-      const method = mode === "add" ? "POST" : "PUT";
+      const token = Cookies.get("authToken");
+      if (!token) {
+        throw new Error("Authentication token not found. Please log in.");
+      }
 
-      await fetch(endpoint, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+      const formData = new FormData();
+      Object.keys(data).forEach((key) => {
+        if (key === "image" && data[key] instanceof File) {
+          formData.append("image", data[key]);
+        } else if (key === "referenceUrl") {
+          data[key].forEach((url, index) => {
+            if (url) formData.append(`referenceUrl[${index}]`, url);
+          });
+        } else {
+          formData.append(key, data[key]);
+        }
       });
 
-      router.push("/blog");
-      router.refresh();
+      const endpoint =
+        mode === "add"
+          ? `${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs`
+          : `${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs/${initialData.id}`;
+      const method = mode === "add" ? "POST" : "PUT";
+
+      const response = await axios({
+        method: method,
+        url: endpoint,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: formData,
+      });
+
+      if (response.status) {
+        router.push("/manage/article");
+      } else {
+        throw new Error("Failed to save the blog post.");
+      }
     } catch (error) {
       console.error("Error saving blog:", error);
     } finally {
@@ -91,29 +137,22 @@ export default function ArticleForm({ mode, initialData }) {
     }
   }
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files?.[0];
+  const handleImageUpload = (file) => {
     if (!file) return;
+    form.setValue("image", file);
+  };
 
-    try {
-      // Here you would typically upload the image to your storage service
-      // and get back a URL
-      const formData = new FormData();
-      formData.append("file", file);
+  const addReferenceUrl = () => {
+    const currentUrls = form.getValues("referenceUrl");
+    form.setValue("referenceUrl", [...currentUrls, ""]);
+  };
 
-      // Simulated upload - replace with your actual upload logic
-      // const response = await fetch('/api/upload', {
-      //   method: 'POST',
-      //   body: formData,
-      // })
-      // const { url } = await response.json()
-
-      // For now, we'll use a placeholder URL
-      const url = URL.createObjectURL(file);
-      form.setValue("banner", url);
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    }
+  const removeReferenceUrl = (index) => {
+    const currentUrls = form.getValues("referenceUrl");
+    form.setValue(
+      "referenceUrl",
+      currentUrls.filter((_, i) => i !== index)
+    );
   };
 
   return (
@@ -121,27 +160,43 @@ export default function ArticleForm({ mode, initialData }) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="banner"
+          name="image"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Blog Banner</FormLabel>
+              <FormLabel>Blog image</FormLabel>
               <FormControl>
-                <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-6 h-[200px] bg-muted">
+                <div
+                  className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-6 h-[400px] bg-muted"
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const file = e.dataTransfer.files?.[0];
+                    if (file) handleImageUpload(file);
+                  }}
+                >
                   {field.value ? (
                     <div className="relative w-full h-full">
                       <img
-                        src={field.value || "/placeholder.svg"}
-                        alt="Blog banner"
+                        src={
+                          field.value instanceof File
+                            ? URL.createObjectURL(field.value)
+                            : field.value
+                        }
+                        alt="Blog image"
                         className="w-full h-full object-cover rounded-lg"
                       />
                       <Button
                         type="button"
                         variant="secondary"
                         size="sm"
-                        className="absolute top-2 right-2"
-                        onClick={() => form.setValue("banner", "")}
+                        className="absolute top-2 right-2 bg-red-500 text-white"
+                        onClick={() => form.setValue("image", "")}
                       >
-                        Change
+                        Remove
                       </Button>
                     </div>
                   ) : (
@@ -159,7 +214,9 @@ export default function ArticleForm({ mode, initialData }) {
                             type="file"
                             className="sr-only"
                             accept="image/*"
-                            onChange={handleImageUpload}
+                            onChange={(e) =>
+                              handleImageUpload(e.target.files?.[0])
+                            }
                           />
                         </label>
                         <p className="pl-1">or drag and drop</p>
@@ -217,13 +274,19 @@ export default function ArticleForm({ mode, initialData }) {
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a category" />
+                    <SelectValue
+                      placeholder={
+                        isCategoriesLoading
+                          ? "Loading categories..."
+                          : "Select a category"
+                      }
+                    />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className="bg-white">
                   {categories.map((category) => (
-                    <SelectItem key={category.id} value={category.id}>
-                      {category.name}
+                    <SelectItem key={category._id} value={category._id}>
+                      {category.title}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -247,19 +310,48 @@ export default function ArticleForm({ mode, initialData }) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="referenceUrl"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Reference URL</FormLabel>
-              <FormControl>
-                <Input placeholder="https://example.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <FormLabel>Reference URLs</FormLabel>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addReferenceUrl}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add URL
+            </Button>
+          </div>
+
+          {form.watch("referenceUrl").map((_, index) => (
+            <FormField
+              key={index}
+              control={form.control}
+              name={`referenceUrl.${index}`}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <div className="flex gap-2">
+                      <Input placeholder="https://example.com" {...field} />
+                      {index > 0 && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => removeReferenceUrl(index)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          ))}
+        </div>
 
         <FormField
           control={form.control}
@@ -286,7 +378,7 @@ export default function ArticleForm({ mode, initialData }) {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
+                <PopoverContent className="w-auto p-0 bg-white" align="start">
                   <Calendar
                     mode="single"
                     selected={field.value}

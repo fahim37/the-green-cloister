@@ -8,6 +8,9 @@ import { useAnimation, motion } from "framer-motion";
 import StatsBar from "./stats-bar";
 import { MagicCard } from "../magicui/magic-card";
 import StaggeredText from "../animation/staggered-text";
+import FadeB from "../animation/fadeB";
+import Image from "next/image";
+import FadeR from "../animation/fadeR";
 
 export default function Hero() {
   const controls = useAnimation();
@@ -24,9 +27,9 @@ export default function Hero() {
   };
 
   return (
-    <div className="relative h-[900px] mt-[-64px]">
+    <div className="relative h-[800px] mt-[-64px]">
       {/* Background Image with Overlay */}
-      <div className="absolute inset-0 bg-[url('/assets/homepage/hero.png')] bg-cover bg-center " />
+      <div className="absolute inset-0 bg-[url('/assets/homepage/hero.png')] bg-cover bg-center" />
 
       {/* Content */}
       <div className="relative z-10 flex items-center h-full  w-[97%] mx-auto md:w-auto">
@@ -38,40 +41,34 @@ export default function Hero() {
           >
             <div className="bg-white h-full w-full scale-x-[99%] scale-y-[97.5%] py-6 px-3 lg:py-14 lg:px-14 rounded-lg translate-y-[-0.5px]">
               <div className="space-y-4 ">
-                <div className="flex gap-3">
-                  <StaggeredText
-                    text="The"
-                    delay={0}
-                    className={
-                      "text-primary text-[35px] lg:text-[55px] font-semibold"
-                    }
+                <FadeR className="flex gap-3">
+                  <Image
+                    src="/assets/logo.png"
+                    width={500}
+                    height={500}
+                    alt="Logo"
                   />
-                  <StaggeredText
-                    text="Green"
-                    delay={0.4}
-                    className={
-                      "text-primary text-[35px] lg:text-[55px] font-semibold"
-                    }
-                  />
-                  <StaggeredText
-                    text="Cloister"
-                    delay={0.8}
-                    className={
-                      "text-primary text-[35px] lg:text-[55px] font-semibold"
-                    }
-                  />
-                </div>
+                </FadeR>
                 <StaggeredText
-                  text="Eton College's student-run environmental publication"
-                  delay={1}
+                  text="Student-run environmental publication, with roots at Winchester College"
+                  delay={0.2}
                   className={"text-[#8db87f] text-md md:text-2xl font-normal"}
                   asWords={"true"}
                 />
-                <blockquote className="text-[15px] md:text-[20px] mt-6 italic text-gray-600 max-w-[800px]">
-                  {
-                    '"I\'m sure things are going to get worse before they get better.\nBut I believe they can get better."'
-                  }
-                </blockquote>
+
+                <StaggeredText
+                  text={`"What you do makes a difference, and you have to decide
+what kind of difference you want to make."`}
+                  delay={0.6}
+                  className="text-[15px] md:text-[20px] mt-6 italic text-gray-600 max-w-[800px]"
+                  asWords={true} // or false for letter-by-letter animation
+                />
+                <StaggeredText
+                  text={"Jane Goodall"}
+                  delay={1.2}
+                  className="text-[10px] md:text-[16px] mt-6 text-gray-600 max-w-[800px]"
+                  asWords={true} // or false for letter-by-letter animation
+                />
               </div>
               <div>
                 <Link href="/article/123">
@@ -101,9 +98,9 @@ export default function Hero() {
       </div>
 
       {/* Stats Bar */}
-      <div className="max-w-[770px] mx-auto mt-[-70px]">
+      <FadeB className="max-w-[770px] mx-auto mt-[-70px]">
         <StatsBar />
-      </div>
+      </FadeB>
     </div>
   );
 }

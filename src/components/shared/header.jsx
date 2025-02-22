@@ -14,6 +14,7 @@ import {
   NavigationMenuTrigger,
 } from "../ui/navigation-menu";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const categories = [
   { title: "Short Read", href: "/category/short-read" },
@@ -29,7 +30,7 @@ export function Header() {
   const [isTop, setIsTop] = useState(true);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const pathname = usePathname();
-
+  console.log(pathname);
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -49,9 +50,14 @@ export function Header() {
   }, [lastScrollY]);
 
   const getLinkStyle = (path) => {
-    const baseStyle = isTop
-      ? "text-white hover:bg-white/10"
-      : "text-black hover:bg-gray-100";
+    // Check if current path is an article route
+    const isArticlePath = pathname.startsWith("/article");
+
+    const baseStyle =
+      isArticlePath || !isTop
+        ? "text-black hover:bg-gray-100"
+        : "text-white hover:bg-white/10";
+
     const activeStyle = "text-primary";
     return pathname === path ? `${baseStyle} ${activeStyle}` : baseStyle;
   };
@@ -69,9 +75,13 @@ export function Header() {
         {/* Left section with logo */}
         <div className="flex items-center gap-6">
           <Link href="/" className="items-center space-x-2">
-            <span className="text-xl font-bold text-primary">
-              The Green Cloister
-            </span>
+            <Image
+              src="/assets/logo.png"
+              width={500}
+              height={500}
+              alt="Picture of the author"
+              className="h-[55px] w-[250px]"
+            />
           </Link>
         </div>
 
@@ -81,7 +91,7 @@ export function Header() {
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger
-                  className={`${getLinkStyle("/category")}`}
+                  className={`${getLinkStyle("/category")} text-[19px]`}
                 >
                   By Category
                 </NavigationMenuTrigger>
@@ -105,10 +115,14 @@ export function Header() {
             </NavigationMenuList>
           </NavigationMenu>
           <Button variant="ghost" className={getLinkStyle("/about")} asChild>
-            <Link href="/about">About Us</Link>
+            <Link href="/about" className="text-[20px] ">
+              About Us
+            </Link>
           </Button>
           <Button variant="ghost" className={getLinkStyle("/contact")} asChild>
-            <Link href="/contact">Contact Us</Link>
+            <Link href="/contact" className="text-[20px] ">
+              Contact Us
+            </Link>
           </Button>
         </nav>
 
@@ -118,9 +132,9 @@ export function Header() {
             variant="ghost"
             size="icon"
             className={`${
-              isTop
-                ? "text-white hover:bg-white/10"
-                : "text-black hover:bg-gray-100"
+              pathname.startsWith("/article") || !isTop
+                ? "text-black hover:bg-gray-100"
+                : "text-white hover:bg-white/10"
             }`}
           >
             <Search className="h-5 w-5" />
@@ -134,9 +148,9 @@ export function Header() {
                 variant="ghost"
                 size="icon"
                 className={`${
-                  isTop
-                    ? "text-white hover:bg-white/10"
-                    : "text-black hover:bg-gray-100"
+                  pathname.startsWith("/article") || !isTop
+                    ? "text-black hover:bg-gray-100"
+                    : "text-white hover:bg-white/10"
                 } md:hidden`}
               >
                 <Menu className="h-5 w-5" />
