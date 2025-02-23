@@ -21,6 +21,9 @@ module.exports = {
         },
       },
       colors: {
+        background: "#FFFFFF",
+        border: '#ddd',
+        ring: "#3DBC12", // Define the "ring" color explicitly
         primary: {
           DEFAULT: "#3DBC12",
         },
@@ -31,13 +34,14 @@ module.exports = {
           DEFAULT: "#000000",
           hover: "#53AC9F",
         },
-
         textSecondary: {
           DEFAULT: "#FFFFFF",
         },
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-  plugins: [require("tailwind-scrollbar-hide")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("tailwind-scrollbar-hide"),
+  ],
 };

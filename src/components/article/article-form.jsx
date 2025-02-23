@@ -28,11 +28,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { z } from "zod";
 import axios from "axios";
 import Cookies from "js-cookie";
+import TiptapEditor from "./tiptap-editor";
 
 // const categories = [
 //   { id: "1", name: "Technology" },
@@ -254,11 +254,7 @@ export default function ArticleForm({ mode = "add", initialData }) {
             <FormItem>
               <FormLabel>Blog Description</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Type description here"
-                  className="resize-none h-[300px]"
-                  {...field}
-                />
+                <TiptapEditor value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
