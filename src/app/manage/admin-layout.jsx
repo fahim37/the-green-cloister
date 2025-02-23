@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { FilePlus, LayoutDashboard, Menu } from "lucide-react";
-
+import { usePathname } from "next/navigation";
+import { FilePlus, LayoutDashboard, Menu, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -26,7 +26,7 @@ const navItems = [
       {
         title: "Dashboard",
         href: "/manage",
-        icon: <LayoutDashboard className="w-4 h-4" />,
+        icon: <LayoutDashboard className="w-5 h-5" />,
       },
     ],
   },
@@ -36,12 +36,12 @@ const navItems = [
       {
         title: "All Articles",
         href: "/manage/article",
-        icon: <FilePlus className="w-4 h-4" />,
+        icon: <FilePlus className="w-5 h-5" />,
       },
       {
         title: "Add Article",
         href: "/manage/article/add",
-        icon: <FilePlus className="w-4 h-4" />,
+        icon: <FilePlus className="w-5 h-5" />,
       },
     ],
   },
@@ -50,37 +50,35 @@ const navItems = [
 export default function AdminLayout({ children }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const router = useRouter();
-
-  React.useEffect(() => {
-    document.documentElement.style.overflow = "hidden";
-  }, []);
+  const pathname = usePathname();
 
   const handleLogOut = () => {
-    // Remove the authToken cookie
     Cookies.remove("authToken");
-
-    // Redirect to login page
     router.push("/login");
   };
 
   return (
-    <div className="flex max-h-screen bg-white">
-      <aside className="hidden lg:flex w-64 flex-col border-r">
-        <div className="p-6 border-b">
-          <h2 className="text-lg font-semibold">Admin Panel</h2>
+    <div className="flex h-screen bg-gray-100">
+      <aside className="hidden lg:flex w-64 flex-col bg-white shadow-md">
+        <div className="flex items-center h-14 px-6 border-b">
+          <h2 className="text-xl font-bold text-primary">Admin Panel</h2>
         </div>
-        <div className="flex-1">
+        <ScrollArea className="flex-1">
           <nav className="p-4 space-y-6">
             {navItems.map((section, i) => (
               <div key={i} className="space-y-2">
-                <h3 className="text-sm font-medium text-muted-foreground px-2">
+                <h3 className="text-sm font-medium text-gray-500 px-2">
                   {section.title}
                 </h3>
-                {section.items.map((item, j) => (
+                {section.items.map((item) => (
                   <Link
-                    key={j}
+                    key={item.href}
                     href={item.href}
-                    className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-gray-100 ${
+                      pathname === item.href
+                        ? "bg-primary text-primary-foreground"
+                        : "text-gray-700"
+                    }`}
                   >
                     {item.icon}
                     {item.title}
@@ -89,27 +87,31 @@ export default function AdminLayout({ children }) {
               </div>
             ))}
           </nav>
-        </div>
+        </ScrollArea>
       </aside>
 
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetContent side="left" className="w-64 p-0 bg-white">
-          <div className="p-6 border-b">
-            <h2 className="text-lg font-semibold">Admin Panel</h2>
+          <div className="flex items-center h-14 px-6 border-b">
+            <h2 className="text-xl font-bold text-primary">Admin Panel</h2>
           </div>
-          <ScrollArea className="h-[calc(100vh-5rem)]">
+          <ScrollArea className="h-[calc(100vh-3.5rem)]">
             <nav className="p-4 space-y-6">
               {navItems.map((section, i) => (
                 <div key={i} className="space-y-2">
-                  <h3 className="text-sm font-medium text-muted-foreground px-2">
+                  <h3 className="text-sm font-medium text-gray-500 px-2">
                     {section.title}
                   </h3>
-                  {section.items.map((item, j) => (
+                  {section.items.map((item) => (
                     <Link
-                      key={j}
+                      key={item.href}
                       href={item.href}
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-gray-100 ${
+                        pathname === item.href
+                          ? "bg-primary text-primary-foreground"
+                          : "text-gray-700"
+                      }`}
                     >
                       {item.icon}
                       {item.title}
@@ -122,8 +124,8 @@ export default function AdminLayout({ children }) {
         </SheetContent>
       </Sheet>
 
-      <div className="flex-1 flex flex-col min-h-screen">
-        <header className="flex h-14 items-center gap-4 border-b px-6">
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <header className="flex h-14 items-center gap-4 border-b bg-white px-6">
           <Button
             variant="ghost"
             size="icon"
@@ -136,30 +138,34 @@ export default function AdminLayout({ children }) {
           <div className="flex-1" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar>
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@shadcn"
-                />
-                <AvatarFallback>Admin</AvatarFallback>
-              </Avatar>
+              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>AD</AvatarFallback>
+                </Avatar>
+              </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-black text-white">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">shadcn</p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    admin@example.com
+                  </p>
+                </div>
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
-
-              <DropdownMenuItem>
-                <Button
-                  onClick={handleLogOut}
-                  className="bg-red-500 hover:bg-red-700 w-full"
-                >
-                  Logout
-                </Button>
+              <DropdownMenuItem onClick={handleLogOut}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+        <main className="flex-1 overflow-auto bg-gray-50 p-6">{children}</main>
       </div>
     </div>
   );

@@ -8,6 +8,8 @@ import {
   Heading3,
   Highlighter,
   Italic,
+  List,
+  ListOrdered,
   Strikethrough,
   SuperscriptIcon,
 } from "lucide-react";
@@ -68,6 +70,18 @@ export default function EditorToolbar({ editor }) {
       isActive: () => editor.isActive("superscript"),
     },
     {
+      icon: List,
+      label: "Bullet List",
+      action: () => editor.chain().focus().toggleBulletList().run(),
+      isActive: () => editor.isActive("bulletList"),
+    },
+    {
+      icon: ListOrdered,
+      label: "Numbered List",
+      action: () => editor.chain().focus().toggleOrderedList().run(),
+      isActive: () => editor.isActive("orderedList"),
+    },
+    {
       icon: AlignLeft,
       label: "Align left",
       action: () => editor.chain().focus().setTextAlign("left").run(),
@@ -87,8 +101,9 @@ export default function EditorToolbar({ editor }) {
     },
     {
       icon: Highlighter,
-      label: "Highlight",
-      action: () => editor.chain().focus().toggleHighlight().run(),
+      label: "Highlight (Green)",
+      action: () =>
+        editor.chain().focus().toggleHighlight({ color: "#10b981" }).run(),
       isActive: () => editor.isActive("highlight"),
     },
   ];
