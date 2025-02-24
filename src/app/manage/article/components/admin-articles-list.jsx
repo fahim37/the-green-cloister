@@ -20,6 +20,7 @@ import {
 import { Check, Loader2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import ConfirmDeleteDialog from "./confirm-delete-dialog";
 
 const ITEMS_PER_PAGE = 4;
 
@@ -34,7 +35,11 @@ export default function AdminArticlesList() {
   const [hasNextPage, setHasNextPage] = useState(false);
   const [hasPrevPage, setHasPrevPage] = useState(false);
 
-  console.log(categories);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [selectedSlug, setSelectedSlug] = useState(null);
+
+  const [updateFetch, setUpdateFetch] = useState(false);
+
   // Fetch categories
   const fetchCategories = useCallback(async () => {
     try {
@@ -57,7 +62,7 @@ export default function AdminArticlesList() {
       const categoryParam =
         selectedCategory === "all" ? "" : `&category=${selectedCategory}`;
       const response = await axios.get(
-        `http://localhost:5000/api/v1/blogs?page=${currentPage}&limit=${ITEMS_PER_PAGE}${categoryParam}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs?page=${currentPage}&limit=${ITEMS_PER_PAGE}${categoryParam}`
       );
 
       if (response.data.status) {
@@ -68,13 +73,14 @@ export default function AdminArticlesList() {
       } else {
         setError(response.data.message);
       }
+      setUpdateFetch(false);
     } catch (err) {
       setError("Failed to fetch posts");
       console.error(err);
     } finally {
       setIsLoading(false);
     }
-  }, [currentPage, selectedCategory]);
+  }, [currentPage, selectedCategory, updateFetch]);
 
   // Initial fetch of categories and posts
   useEffect(() => {
@@ -92,6 +98,11 @@ export default function AdminArticlesList() {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+
+  const handleOpenDelete = (slug) => {
+    setSelectedSlug(slug);
+    setOpenDelete(true);
   };
 
   if (error) {
@@ -181,7 +192,7 @@ export default function AdminArticlesList() {
                   <CardFooter className="flex flex-col space-y-2">
                     <div className="flex w-full gap-2">
                       <Link
-                        href={`/manage/article/edit/${post._id}`}
+                        href={`/manage/article/edit/${post.slug}`}
                         className="w-1/2"
                         passHref
                       >
@@ -195,9 +206,16 @@ export default function AdminArticlesList() {
                       <Button
                         variant="outline"
                         className="flex-1 border-primary bg-transparent text-textPrimary hover:bg-primary/80 hover:text-white w-full"
+                        onClick={() => handleOpenDelete(post.slug)}
                       >
                         Delete
                       </Button>
+                      <ConfirmDeleteDialog
+                        open={openDelete}
+                        onClose={() => setOpenDelete(false)}
+                        slug={selectedSlug}
+                        setUpdateFetch={setUpdateFetch}
+                      />
                     </div>
                     <Button
                       className={`w-full ${

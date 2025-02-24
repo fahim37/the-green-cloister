@@ -30,7 +30,6 @@ export function Header() {
   const [isTop, setIsTop] = useState(true);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const pathname = usePathname();
-  console.log(pathname);
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;

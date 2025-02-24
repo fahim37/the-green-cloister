@@ -34,13 +34,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import TiptapEditor from "./tiptap-editor";
 
-// const categories = [
-//   { id: "1", name: "Technology" },
-//   { id: "2", name: "Travel" },
-//   { id: "3", name: "Food" },
-//   { id: "4", name: "Lifestyle" },
-// ];
-
 const blogFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Blog description is required"),
@@ -115,7 +108,7 @@ export default function ArticleForm({ mode = "add", initialData }) {
           ? `${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs`
           : `${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs/${initialData.id}`;
       const method = mode === "add" ? "POST" : "PUT";
-
+      console.log(data);
       const response = await axios({
         method: method,
         url: endpoint,

@@ -74,9 +74,9 @@ export default function AdminLayout({ children }) {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-gray-100 ${
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-primary/20 ${
                       pathname === item.href
-                        ? "bg-primary text-primary-foreground"
+                        ? "bg-primary text-white hover:!bg-primary/80"
                         : "text-gray-700"
                     }`}
                   >
