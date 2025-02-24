@@ -3,30 +3,39 @@ import ArticleForm from "@/components/article/article-form";
 import AdminLayout from "@/app/manage/admin-layout";
 import { useParams } from "next/navigation";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
-export default async function BlogPage() {
+export default function BlogPage() {
   const params = useParams();
   const slug = params.id;
+  const [initialData, setInitialData] = useState(null);
+  const [error, setError] = useState(null);
 
-  console.log("slugggggggg", slug);
-  let initialData = null;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/blogs/${slug}`
+        );
+        setInitialData(response.data.data); // Assuming your API returns data.data
+      } catch (error) {
+        setError("Error fetching blog data");
+        console.error("Error fetching blog data:", error);
+      }
+    };
 
-  try {
-    const response = await axios.get(
-      `http://localhost:5000/api/v1/blogs/${slug}`
-    );
-    initialData = response.data.data; // Assuming your API returns data.data
-    console.log(initialData);
-  } catch (error) {
-    console.error("Error fetching blog data:", error);
-    // Handle error appropriately (e.g., show an error message)
+    fetchData();
+  }, [slug]); // This will run once when the slug changes
+
+  if (error) {
+    return <div>{error}</div>;
   }
 
   return (
     <AdminLayout>
       <div className="max-w-4xl mx-auto p-6">
         <h1 className="text-2xl font-bold mb-6">Edit Blog</h1>
-        {/* <ArticleForm mode="edit" initialData={initialData} /> */}
+        {initialData && <ArticleForm mode="edit" initialData={initialData} />}
       </div>
     </AdminLayout>
   );

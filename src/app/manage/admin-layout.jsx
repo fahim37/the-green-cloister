@@ -56,6 +56,11 @@ export default function AdminLayout({ children }) {
     Cookies.remove("authToken");
     router.push("/login");
   };
+  React.useEffect(() => {
+    setTimeout(() => {
+      document.documentElement.style.overflow = "hidden";
+    }, 100);
+  }, []);
 
   return (
     <div className="flex h-screen bg-gray-100">
