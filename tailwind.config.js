@@ -22,7 +22,7 @@ module.exports = {
       },
       colors: {
         background: "#FFFFFF",
-        border: '#ddd',
+        border: "#ddd",
         ring: "#3DBC12", // Define the "ring" color explicitly
         primary: {
           DEFAULT: "#3DBC12",
@@ -40,8 +40,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-    require("tailwind-scrollbar-hide"),
-  ],
+  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar-hide")],
 };

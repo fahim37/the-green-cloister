@@ -15,7 +15,7 @@ export default function BlogPage() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/blogs/${slug}`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs/${slug}`
         );
         setInitialData(response.data.data); // Assuming your API returns data.data
       } catch (error) {

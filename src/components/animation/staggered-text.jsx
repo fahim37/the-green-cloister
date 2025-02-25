@@ -27,7 +27,7 @@ export default function StaggeredText({
       opacity: 0,
       x: 40,
       transition: {
-        duration: 0.5,
+        duration: 0.3,
         ease: "easeOut",
       },
     },

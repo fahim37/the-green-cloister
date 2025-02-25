@@ -40,15 +40,19 @@ export default function AdminArticlesList() {
 
   const [updateFetch, setUpdateFetch] = useState(false);
 
+  function stripHtmlTags(html) {
+    if (!html) return "";
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  }
+
   // Fetch categories
   const fetchCategories = useCallback(async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/v1/categories"
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/categories`
       );
-      if (response.data.status) {
-        setCategories(response.data.data);
-      }
+      setCategories(response.data.data);
     } catch (err) {
       console.error("Failed to fetch categories:", err);
     }
@@ -121,11 +125,11 @@ export default function AdminArticlesList() {
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select category" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white">
             <SelectItem value="all">All Categories</SelectItem>
-            {categories.map((category) => (
-              <SelectItem key={category._id} value={category._id}>
-                {category.name}
+            {categories.map((category, index) => (
+              <SelectItem key={index} value={category.title}>
+                {category.title}
               </SelectItem>
             ))}
           </SelectContent>
@@ -155,14 +159,8 @@ export default function AdminArticlesList() {
                       width={400}
                       className="h-full w-full object-cover"
                     />
-                    <Badge
-                      className={`absolute right-2 top-2 ${
-                        post.isPublished
-                          ? "bg-green-500 hover:bg-green-600"
-                          : "bg-yellow-500 hover:bg-yellow-600"
-                      } text-white`}
-                    >
-                      {post.isPublished ? "Published" : "Draft"}
+                    <Badge className={`absolute right-2 top-2 text-white`}>
+                      {post.category.title}
                     </Badge>
                   </div>
                   <CardHeader className="space-y-1">
@@ -170,7 +168,7 @@ export default function AdminArticlesList() {
                       {post.title}
                     </h3>
                     <p className="line-clamp-3 text-sm text-zinc-400">
-                      {post.description}
+                      {stripHtmlTags(post.description)}
                     </p>
                     <div className="flex items-center gap-2 text-sm text-zinc-500">
                       <span>{post.authorName}</span>
@@ -179,12 +177,14 @@ export default function AdminArticlesList() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <Button
-                      variant="link"
-                      className="h-auto p-0 text-blue-400 hover:text-blue-300"
-                    >
-                      Details
-                    </Button>
+                    <Link href={`/manage/article/details/${post.slug}`}>
+                      <Button
+                        variant="link"
+                        className="h-auto p-0 text-blue-400 hover:text-blue-300"
+                      >
+                        Details
+                      </Button>
+                    </Link>
                   </CardContent>
                 </div>
 
@@ -196,16 +196,12 @@ export default function AdminArticlesList() {
                         className="w-1/2"
                         passHref
                       >
-                        <Button
-                          variant="outline"
-                          className="flex-1 border-primary bg-transparent text-textPrimary hover:bg-primary/80 hover:text-white w-full"
-                        >
+                        <Button className="flex-1 bg-primary  hover:bg-primary/80 text-white w-full">
                           Edit
                         </Button>
                       </Link>
                       <Button
-                        variant="outline"
-                        className="flex-1 border-primary bg-transparent text-textPrimary hover:bg-primary/80 hover:text-white w-full"
+                        className="flex-1 bg-red-500 text-white hover:bg-red-600  w-full"
                         onClick={() => handleOpenDelete(post.slug)}
                       >
                         Delete
@@ -217,7 +213,7 @@ export default function AdminArticlesList() {
                         setUpdateFetch={setUpdateFetch}
                       />
                     </div>
-                    <Button
+                    {/* <Button
                       className={`w-full ${
                         post.isPublished
                           ? "bg-yellow-500 hover:bg-yellow-600"
@@ -226,7 +222,7 @@ export default function AdminArticlesList() {
                     >
                       {post.isPublished ? "Unpublish" : "Publish"}
                       <Check className="ml-1 h-4 w-4" />
-                    </Button>
+                    </Button> */}
                   </CardFooter>
                 </div>
               </Card>

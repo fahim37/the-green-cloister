@@ -1,12 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import HomePageHeading from "../shared/homepage-heading";
 import ArticleGrid from "../shared/articles-grid";
 
 export default function ArchiveArticles() {
@@ -16,9 +12,12 @@ export default function ArchiveArticles() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/v1/blogs", {
-          params: { limit: 6 },
-        });
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs`,
+          {
+            params: { limit: 6 },
+          }
+        );
         setArticles(response.data.data); // Fix: Access 'data' instead of 'blogs'
       } catch (error) {
         console.error("Error fetching articles:", error);
@@ -31,11 +30,16 @@ export default function ArchiveArticles() {
   }, []);
 
   return (
-    <div className="container px-4 py-12">
+    <div className="container px-4 py-5 md:py-10">
       <div className="flex justify-between items-center">
         <div />
         <div className="translate-x-[55px]">
-          <HomePageHeading text={"Archives"} />
+          <div className="flex items-center justify-center gap-2 mb-10">
+            <div className="w-2 h-8 bg-primary"></div>
+            <h2 className="text-textPrimary text-[24px] md:text-[32px] font-semibold">
+              All Articles
+            </h2>
+          </div>
         </div>
         <Link href="/article" className="mb-7 md:mb-10">
           <Button

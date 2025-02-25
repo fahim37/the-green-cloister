@@ -99,6 +99,24 @@ export default function ArticlePost() {
             dangerouslySetInnerHTML={{ __html: article.description }}
           />
         </div>
+        {/* references */}
+        <div className="my-4 md:my-8">
+          <h3 className="my-4 md:my-8 font-bold">References:</h3>
+          <ol>
+            {article.referenceUrl.map((url, index) => (
+              <li key={index} className="mr-2">
+                <a
+                  href={url.startsWith("http") ? url : `https://${url}`}
+                  className="text-primary hover:bg-primary hover:text-white p-1 duration-300 rounded-sm underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {url}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
     </article>
   );

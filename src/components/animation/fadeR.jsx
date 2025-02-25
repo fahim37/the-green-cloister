@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
-export default function FadeR({ children, className }) {
+export default function FadeR({ children, className, delay = 0.1 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
@@ -10,14 +10,20 @@ export default function FadeR({ children, className }) {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3,
+        staggerChildren: delay,
       },
     },
   };
 
   const childVariants = {
     hidden: { opacity: 0, x: 50 },
-    visible: { opacity: 1, x: 0 },
+    visible: () => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        delay: delay,
+      },
+    }),
   };
 
   return (
@@ -28,8 +34,10 @@ export default function FadeR({ children, className }) {
       animate={isInView ? "visible" : "hidden"}
       className={`fade-in-section ${className}`}
     >
-      {React.Children.map(children, (child) => (
-        <motion.div variants={childVariants}>{child}</motion.div>
+      {React.Children.map(children, (child, index) => (
+        <motion.div variants={childVariants} custom={index}>
+          {child}
+        </motion.div>
       ))}
     </motion.div>
   );

@@ -29,10 +29,9 @@ export default function ArticleList() {
   // Fetch categories
   const fetchCategories = useCallback(async () => {
     try {
-      const response =
-        (await axios.get) <
-        CategoryResponse >
-        "http://localhost:5000/api/v1/categories";
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/categories`
+      );
       if (response.data.status) {
         setCategories(response.data.data);
       }
@@ -49,7 +48,7 @@ export default function ArticleList() {
       const categoryParam =
         selectedCategory === "all" ? "" : `&category=${selectedCategory}`;
       const response = await axios.get(
-        `http://localhost:5000/api/v1/blogs?page=${currentPage}&limit=${ITEMS_PER_PAGE}${categoryParam}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs?page=${currentPage}&limit=${ITEMS_PER_PAGE}${categoryParam}`
       );
 
       if (response.data.status) {
@@ -108,11 +107,11 @@ export default function ArticleList() {
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white ">
               <SelectItem value="all">All Categories</SelectItem>
               {categories.map((category) => (
-                <SelectItem key={category._id} value={category._id}>
-                  {category.name}
+                <SelectItem key={category._id} value={category.title}>
+                  {category.title}
                 </SelectItem>
               ))}
             </SelectContent>

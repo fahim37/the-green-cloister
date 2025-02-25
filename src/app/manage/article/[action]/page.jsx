@@ -10,7 +10,7 @@ export default function BlogPage({ params }) {
   return (
     <AdminLayout>
       <div className="max-w-5xl mx-auto p-6">
-        <h1 className="text-2xl font-bold mb-6 mx-5">
+        <h1 className="text-2xl font-bold mb-6 text-primary">
           {params.action === "add" ? "Add New Article" : "Edit Article"}
         </h1>
         <ArticleForm mode={params.action} />

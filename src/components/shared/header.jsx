@@ -6,29 +6,13 @@ import { motion } from "framer-motion";
 import { Menu, Search, X, ChevronDown } from "lucide-react";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "../ui/sheet";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "../ui/navigation-menu";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-
-const categories = [
-  { title: "Short Read", href: "/category/short-read" },
-  { title: "Long Read", href: "/category/long-read" },
-  { title: "News of the Month", href: "/category/news" },
-  { title: "Film and Book Reviews", href: "/category/reviews" },
-  { title: "Interviews", href: "/category/interviews" },
-];
 
 export function Header() {
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isTop, setIsTop] = useState(true);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const pathname = usePathname();
   useEffect(() => {
     const handleScroll = () => {
@@ -66,7 +50,7 @@ export function Header() {
       initial={{ y: 0 }}
       animate={{ y: visible ? 0 : -100 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className={`fixed top-0 z-50 w-full transition-all backdrop-blur-md ${
+      className={`fixed top-0 z-50 w-full transition-all  ${
         isTop ? "bg-transparent" : "bg-white shadow-md"
       }`}
     >
@@ -79,47 +63,25 @@ export function Header() {
               width={500}
               height={500}
               alt="Picture of the author"
-              className="h-[55px] w-[250px]"
+              className="h-[45px] w-[250px] md:h-[55px] md:w-[290px]"
             />
           </Link>
         </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden items-center gap-6 md:flex">
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger
-                  className={`${getLinkStyle("/category")} text-[19px]`}
-                >
-                  By Category
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[200px] gap-1 bg-primary text-textPrimary p-4">
-                    {categories.map((category) => (
-                      <li key={category.href}>
-                        <Link
-                          href={category.href}
-                          className={`block select-none rounded-md p-3 text-sm no-underline outline-none transition-colors ${getLinkStyle(
-                            category.href
-                          )}`}
-                        >
-                          {category.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+          <Button variant="ghost" className={getLinkStyle("/article")} asChild>
+            <Link href="/article" className="!text-xl ">
+              All Articles
+            </Link>
+          </Button>
           <Button variant="ghost" className={getLinkStyle("/about")} asChild>
-            <Link href="/about" className="text-[20px] ">
+            <Link href="/about" className="text-xl ">
               About Us
             </Link>
           </Button>
           <Button variant="ghost" className={getLinkStyle("/contact")} asChild>
-            <Link href="/contact" className="text-[20px] ">
+            <Link href="/contact" className="text-xl ">
               Contact Us
             </Link>
           </Button>
@@ -158,48 +120,28 @@ export function Header() {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-[300px] sm:w-[400px] border-none bg-[#0D1222]"
+              className="w-[300px] sm:w-[400px] border-none bg-primary"
             >
               <SheetHeader>
                 <div className="flex justify-end">
                   <SheetTrigger asChild>
-                    <Button
+                    {/* <Button
                       size="icon"
                       className="bg-[#9ECEC5] hover:bg-[#8BBDB4]"
                     >
                       <X className="h-5 w-5" />
-                    </Button>
+                    </Button> */}
                   </SheetTrigger>
                 </div>
               </SheetHeader>
               <nav className="mt-8 flex flex-col space-y-4">
                 {/* Mobile Category Dropdown */}
-                <button
-                  className="flex items-center justify-between w-full text-lg text-white"
-                  onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                <Link
+                  href="/about"
+                  className={`text-lg ${getLinkStyle("/about")}`}
                 >
-                  <span>By Category</span>
-                  <ChevronDown
-                    className={`h-5 w-5 text-white transition-transform ${
-                      isCategoryOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                {isCategoryOpen && (
-                  <div className="space-y-3 pl-4">
-                    {categories.map((category) => (
-                      <Link
-                        key={category.href}
-                        href={category.href}
-                        className={`block text-sm ${getLinkStyle(
-                          category.href
-                        )}`}
-                      >
-                        {category.title}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+                  All Articles
+                </Link>
 
                 <Link
                   href="/about"
