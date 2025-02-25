@@ -14,6 +14,11 @@ const ArticleCard = ({ article, index }) => {
     once: true,
     margin: "-80px",
   });
+  function stripHtmlTags(html) {
+    if (!html) return "";
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  }
 
   return (
     <motion.article
@@ -37,8 +42,7 @@ const ArticleCard = ({ article, index }) => {
               variant="secondary"
               className="absolute right-3 top-3 z-10 rounded-[6px] bg-primary px-2 py-1 text-[11px] font-normal text-white hover:bg-primary/80"
             >
-              {/* {article.category} */}
-              Category
+              {article.category.title}
             </Badge>
           )}
           <Image
@@ -55,7 +59,7 @@ const ArticleCard = ({ article, index }) => {
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{
           duration: 0.5,
-          delay: index * 0.2 + 0.2, // Additional delay for content
+          delay: index * 0.2 + 0.1, // Additional delay for content
           ease: "easeOut",
         }}
         className="flex flex-1 flex-col pt-5"
@@ -70,7 +74,7 @@ const ArticleCard = ({ article, index }) => {
         </Link>
 
         <p className="line-clamp-3 text-sm leading-snug text-textPrimary">
-          {article.description}
+          {stripHtmlTags(article.description)}
         </p>
         <div className="mt-3">
           <Link href={`/article/${article.slug}`}>

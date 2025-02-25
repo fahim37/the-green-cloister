@@ -54,7 +54,7 @@ export default function WhoAreWe() {
                 height={500}
                 className="w-[250px] h-[300px] lg:w-[550px] lg:h-[500px] object-cover rounded-[12px] overflow-hidden"
               />
-              <div className="absolute bottom-[-100px] md:right-[-150px] right-[-50px]">
+              <div className="absolute bottom-[-100px] lg:right-[-150px] right-[-10px]">
                 <Image
                   src="/assets/homepage/whoarewe2.png"
                   alt="Who are we Image"

@@ -45,6 +45,26 @@ const navItems = [
       },
     ],
   },
+  {
+    title: "Category",
+    items: [
+      {
+        title: "Manage Categories",
+        href: "/manage/category",
+        icon: <FilePlus className="w-5 h-5" />,
+      },
+    ],
+  },
+  {
+    title: "Newsletter",
+    items: [
+      {
+        title: "Manage Newsletter",
+        href: "/manage/newsletter",
+        icon: <FilePlus className="w-5 h-5" />,
+      },
+    ],
+  },
 ];
 
 export default function AdminLayout({ children }) {
@@ -163,7 +183,10 @@ export default function AdminLayout({ children }) {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogOut}>
+              <DropdownMenuItem
+                onClick={handleLogOut}
+                className="bg-red-500 rounded-lg text-white hover:bg-red-600 cursor-pointer"
+              >
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
               </DropdownMenuItem>

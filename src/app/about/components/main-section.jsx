@@ -43,11 +43,11 @@ const MainSection = () => {
             <Image
               src="/assets/homepage/whoarewe1.png"
               alt="Who are we Image"
-              width={450}
+              width={550}
               height={500}
-              className="w-[250px] h-[300px] lg:w-[450px] lg:h-[500px] object-cover rounded-[12px] overflow-hidden"
+              className="w-[250px] h-[300px] lg:w-[550px] lg:h-[500px] object-cover rounded-[12px] overflow-hidden"
             />
-            <div className="absolute bottom-[-100px] right-[-150px] w-[300px]">
+            <div className="absolute bottom-[-100px] lg:right-[-150px] right-[-10px]">
               <Image
                 src="/assets/homepage/whoarewe2.png"
                 alt="Who are we Image"

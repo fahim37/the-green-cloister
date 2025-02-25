@@ -59,27 +59,35 @@ export default function ArticleForm({ mode = "add", initialData }) {
         if (response.data.status) {
           setCategories(response.data.data);
         }
+        // console.log(response);
       } catch (error) {
         console.error("Error fetching categories:", error);
       } finally {
         setIsCategoriesLoading(false);
       }
     };
-
     fetchCategories();
   }, []);
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
-    defaultValues: initialData || {
-      title: "",
-      description: "",
-      category: "",
-      authorName: "",
-      referenceUrl: [""],
-      date: new Date(),
-      image: "",
-    },
+    defaultValues: initialData
+      ? {
+          ...initialData,
+          date: initialData.date ? new Date(initialData.date) : new Date(),
+          referenceUrl: initialData.referenceUrl?.length
+            ? initialData.referenceUrl
+            : [""], // Ensure it's an array
+        }
+      : {
+          title: "",
+          description: "",
+          category: "",
+          authorName: "",
+          referenceUrl: [""],
+          date: new Date(),
+          image: "",
+        },
   });
 
   async function onSubmit(data) {
@@ -91,24 +99,30 @@ export default function ArticleForm({ mode = "add", initialData }) {
       }
 
       const formData = new FormData();
+      // console.log("formData", formData);
       Object.keys(data).forEach((key) => {
         if (key === "image" && data[key] instanceof File) {
           formData.append("image", data[key]);
-        } else if (key === "referenceUrl") {
-          data[key].forEach((url, index) => {
-            if (url) formData.append(`referenceUrl[${index}]`, url);
-          });
-        } else {
+        }
+        //  else if (key === "referenceUrl") {
+        //   data[key].forEach((url, index) => {
+        //     if (url) formData.append(`referenceUrl[${index}]`, url);
+
+        //   });
+        // }
+        else {
           formData.append(key, data[key]);
         }
       });
+      // console.log(formData);
 
       const endpoint =
         mode === "add"
           ? `${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs`
-          : `${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs/${initialData.id}`;
+          : `${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs/${initialData.slug}`;
       const method = mode === "add" ? "POST" : "PUT";
-      console.log(data);
+      // console.log("data", data);
+
       const response = await axios({
         method: method,
         url: endpoint,
@@ -173,11 +187,14 @@ export default function ArticleForm({ mode = "add", initialData }) {
                 >
                   {field.value ? (
                     <div className="relative w-full h-full">
+                      {/* {console.log(field.value)} */}
                       <img
                         src={
                           field.value instanceof File
-                            ? URL.createObjectURL(field.value)
-                            : field.value
+                            ? URL.createObjectURL(field.value) // Generate preview URL for new uploads
+                            : `${
+                                process.env.NEXT_PUBLIC_API_URL
+                              }${field.value.replace(/^uploads\//, "")}` // Use the custom base URL for existing images
                         }
                         alt="Blog image"
                         className="w-full h-full object-cover rounded-lg"
